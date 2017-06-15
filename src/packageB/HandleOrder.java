@@ -105,6 +105,7 @@ public class HandleOrder extends HttpServlet {
 		}
 		
 		    c.updateUserProfile(customerId,usersAddress,usersCity,usersZip,usersState,usersPhone);
+		    response.sendRedirect("Thankyou.html");
 		
 	}
 }

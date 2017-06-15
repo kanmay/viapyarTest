@@ -25,6 +25,7 @@ public class ReturnResults extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BusinessFunctions bf = new BusinessFunctions();
 	Searcher s = new Searcher();
+	Configuration c = new Configuration();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -103,11 +104,11 @@ public class ReturnResults extends HttpServlet {
 		
 	    writer.println("<html>");
 	    writer.println("<head>");
-		writer.println("<link href='bootstrap/css/bootstrap.min.css' rel='stylesheet'/>"+
+		writer.println(
 			     
 				
 				 "<link rel='stylesheet' media='screen and (min-width: 768px) and (max-width: 2000px)' href='css/stylefilter.css' />"+
-			     "<link rel='stylesheet' media='screen and (min-width: 0px) and (max-width: 767px)' href='css/filtermin.css' />"
+			     "<link rel='stylesheet' media='screen and (min-width: 0px) and (max-width: 767px)' href='css/filtermine.css' />"
                  
 			     );
 	    writer.println("</head>");
@@ -116,18 +117,30 @@ public class ReturnResults extends HttpServlet {
 writer.println(
   
   "<div class='row rowcol'>");
-    for(int k=0;k<arraySize;k++){
-    writer.println("<div class='col-md-3 col-xs-6 no'>"+
-      "<div class='extra thumbnai'>"+
-        "<a href=''>"+
-          "<img src='file:///D:/Kanmay/'+myObj.productsList.products[k].productImageName' 'height='150px' width='150px'>"+
-          "<p> <b>"+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productName")+
-           "</b>"+
-          "</p>"+
-        "</a>"+
-      "</div>"+
-    "</div>");
-    }
+for(int k=0;k<arraySize;k++){
+	
+	int p,f;
+	float d;
+	
+	p=Integer.parseInt(((String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("price")));
+	d=Float.parseFloat((String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("discount"));
+	f=(int)(p-((d/100)*p));
+	
+	
+writer.println("<div class='col-md-3 col-xs-6 extra thumbnai'>"+
+  "<div>"+
+    "<a class='searchres' href='ProductDetailsFetch?productId="+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productId")+"'>"+
+      "<img class='img-responsive' src='"+c.getImgLoc()+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productImageName")+"'   style='height:230px;width:100%'>"+
+      "<p style='  width : 100%;overflow:hidden; display:inline-block;text-overflow: ellipsis;white-space: nowrap;'><br> <b>"+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productBrandName")+
+      "&nbsp;"+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productName")+
+      "</b></p>"+
+     "<p style='  width : 100%;overflow:hidden; display:inline-block;text-overflow: ellipsis;white-space: nowrap;'> <b><span style='color:grey'><del>&#8377 "+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("price")+
+     "<del></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#8377 "+f+" <i>("+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("discount")+" % Off)</i></b>"+
+    "</p>"+
+    "</a>"+
+  "</div>"+
+"</div>");    
+}
     
   writer.println("</div>"
 

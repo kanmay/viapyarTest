@@ -27,6 +27,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
     <link rel="stylesheet" type="text/css" href="css/stylelogin.css">
 	<link rel="stylesheet" type="text/css" href="stylefooter.css">
     <style>
@@ -36,11 +37,26 @@
         .big {
             display: none;
         }
+         .logo{ 
+       position:fixed;
+       top:5px;
+       height:40px;
+       width:40%;
+       
+      }  
     }
 	 @media (min-width: 767px) {
         .small {
             display: none;
         }
+       .logo{ 
+       position:fixed;
+       top:10px;
+       height:10%;
+       width:17%;
+        
+       
+      }
     }
     </style>
 </head>
@@ -197,6 +213,7 @@ auth2.attachClickHandler(element, {},
 
    <div class="div1">
       <nav class="navbar navbar-default nav1 navbar-fixed-top">
+        <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
         <div class="navbar-header">       
           <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
           <span class="icon-bar"></span>
@@ -332,10 +349,11 @@ auth2.attachClickHandler(element, {},
 
 <a href="Signup.jsp">
 <div class="col-xs-3"></div>
+  <a href="Signup.jsp">
 <div class="col-xs-6">
 
-<button type="submit" class="btn1 btn-lg">New to Mantra ? Sign Up</button>
-</div>
+<button type="submit" class="btn1 btn-lg">New to viapyar ? Sign Up</button>
+    </div></a>
 <div class="col-xs-3"></div>
 </a>
 </div>
@@ -452,8 +470,9 @@ auth2.attachClickHandler(element, {},
 <button type="submit" onclick="return sValidateLogin();" class="btn1 btn-sm">Login<span class="glyphicon glyphicon-chevron-right"></span><span class="glyphicon glyphicon-chevron-right"></span></button></div>
 </form>
 
+  <a href="Signup.jsp">
 <div class="col-xs-12">
-<button type="button" class="btn1 btn-sm">New to Mantra ? Sign Up</button></div>
+  <button type="button" class="btn1 btn-sm">New to Viapyar ? Sign Up</button></div></a>
 </div>
 
 
@@ -513,20 +532,148 @@ $(".search").click(function(){
 			  
             $("#hello").html(myObj);
             
-         
-            
-            
-           
-
-            
-			   
-			  
-			   
-			   
+   
 	       }
 	   })
 });
 
+
+//search on Enter click
+$('#searchBox').keypress(function(event){
+    if(event.keyCode == 13){
+     $('.search').click();
+    }
+});
+
+function filterDiv(){
+	  
+	   $("#myButton").attr('class', '');
+	   document.getElementById("article").style.display="none";
+	   document.getElementById("aside").style.display="block";
+	  
+	   document.getElementById("wantFilter").style.display="none";
+	   document.getElementById("applyButton").style.display="block";
+
+	   }
+
+
+
+//filter For samll screen
+
+$(document).on('click','#applyButton',function(){
+
+
+	   document.getElementById("aside").style.display="none";
+
+	  
+	   
+    var propertyFilter = [];
+    $.each($("input[name='prop1']:checked"), function(){            
+        propertyFilter.push($(this).val());
+    });
+   
+  
+    
+    $.each($("input[name='prop2']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+    
+    
+    $.each($("input[name='prop3']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+    
+   
+    $.each($("input[name='prop4']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+    
+    
+    $.each($("input[name='prop5']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+	   
+	   
+	   $.ajax({
+		   type: "POST",
+		   url: "ReturnResults",
+		   dataType: "text",
+		   data: {search: $("#searchBox").val(),
+			     myFilter: JSON.stringify(propertyFilter),
+			     myFilter1: "mayu"
+		   
+		   },
+		 
+		   success: function(response){
+			   var myObj = $.parseHTML(response);
+			   
+			   
+			  
+            $("#article").html(myObj);
+            
+		   
+	       }
+	   })
+	   
+	   document.getElementById("article").style.display="";
+	   document.getElementById("applyButton").style.display="none";
+	   document.getElementById("wantFilter").style.display="";
+});
+
+//
+function typeFilterDiv(){
+
+$("#myButton").attr('class', '');
+document.getElementById("aside").style.display="block";
+document.getElementById("article").style.display="none";
+
+document.getElementById("typeFilter").style.display="none";
+document.getElementById("applyTypeFilterButton").style.display="block";
+
+
+
+}
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
+         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
 
 
 </script>
@@ -578,3 +725,5 @@ $(".search").click(function(){
 <script>startApp();</script>
 </body>
 </html>
+
+

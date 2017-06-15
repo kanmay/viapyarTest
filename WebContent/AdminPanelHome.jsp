@@ -40,6 +40,7 @@
         .big {
             display: none;
         }
+      
     }
 	 @media (min-width: 767px) {
         .small {
@@ -58,10 +59,14 @@
 
 </head>
 
+<c:if test="${!sessionScope.user=='rashatu'}">
+      <c:redirect url="AdminLogin.jsp"/>
+</c:if>
+
 <sql:query var="result" dataSource="${snapshot}">
       
 SELECT orderdetails.orderId,customer.fname,customer.lname,products.productbrandname,
-products.productname,products.price,orderdetails.quantiy,orderdetails.orderstatus,customer.address FROM orderdetails
+products.productname,products.price,orderdetails.quantity,orderdetails.orderstatus,customer.address FROM orderdetails
 INNER JOIN products ON products.productId = orderdetails.productId 
 INNER JOIN customer ON customer.customerId = orderdetails.customerId WHERE orderdetails.orderstatus!="Delivered";
 
@@ -72,6 +77,7 @@ INNER JOIN customer ON customer.customerId = orderdetails.customerId WHERE order
 
 <div class="div1">
    <nav class="navbar navbar-default nav1 navbar-fixed-top">
+     <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
    <div class="navbar-header">       
      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
       <span class="icon-bar"></span>

@@ -14,6 +14,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Delivery Details</title>
     <!-- Bootstrap -->
+    <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -32,10 +33,25 @@
       .big{
       display: none;
       }
+        .logo{ 
+       position:fixed;
+       top:5px;
+       height:40px;
+       width:40%;
+       
+      }  
       }
       @media (min-width: 1001px) {
       .small {
       display: none;
+      }
+        .logo{ 
+       position:fixed;
+       top:10px;
+       height:10%;
+       width:17%;
+        
+       
       }
       }
     </style>
@@ -48,6 +64,7 @@
          <c:when test="${sessionScope.user == null}">
             <div class="div1">
                <nav class="navbar navbar-default nav1 navbar-fixed-top">
+                 <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
                   <div class="navbar-header">       
                      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                      <span class="icon-bar"></span>
@@ -90,6 +107,7 @@
          <c:otherwise>
             <div class="div1">
                <nav class="navbar navbar-default nav1 navbar-fixed-top">
+                 <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
                   <div class="navbar-header">       
                      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                      <span class="icon-bar"></span>
@@ -170,7 +188,7 @@
        <sql:query var="result" dataSource="${snapshot}">
       
 SELECT products.productId,products.productImageName,products.productBrandName,
-products.productName,products.productType,products.discounr,products.price,
+products.productName,products.productType,products.discount,products.price,
 products.cashback,cart.quantity FROM cart
 INNER JOIN products ON products.productId = cart.productId 
 AND cart.customerId = "${sessionScope.user}";              </sql:query>
@@ -203,30 +221,30 @@ AND cart.customerId = "${sessionScope.user}";              </sql:query>
     
     <div class="form-group">
     <label for="Address">Address</label>
-    <input type="text" class="form-control" name="UAddress" value="${sessionScope.address}" ng-model="address">
+    <input type="text" class="form-control" id="UAddress" name="UAddress" value="${sessionScope.address}" ng-model="address">
     </div>
     <div class="row">
     <div class="col-md-4">
     <div class="form-group" style="display:inline;">
     <label for="pwd">City</label>
-    <input type="text" class="form-control" name="UCity" ng-model="city">
+    <input type="text" class="form-control" id="UCity" name="UCity" ng-model="city">
     </div></div>
     <div class="col-md-4">
     <div class="form-group" style="display:inline;">
     <label for="pwd">State</label>
-    <input type="text" class="form-control" name="UState" ng-model="state">
+    <input type="text" class="form-control" id="UState" name="UState" ng-model="state">
     </div></div>
     <div class="col-md-4">
     <div class="form-group" style="display:inline;">
-    <label for="pwd">Zip</label>
-    <input type="text" class="form-control" name="UZip" ng-model="zip">
+    <label for="pwd">Zip (PIN Code)</label>
+    <input type="text" class="form-control" id="UZip" name="UZip" ng-model="zip">
     </div></div></div>
     <br>
     <div class="row">
     <div class="col-md-6">
     <div class="form-group">
     <label for="Phone">Phone No.</label>
-    <input type="number" class="form-control" name="UPhone" ng-model="phone">
+    <input type="number" class="form-control" id="UPhone" name="UPhone" ng-model="phone">
     </div></div></div>
     <br><br><br>
     
@@ -237,17 +255,17 @@ AND cart.customerId = "${sessionScope.user}";              </sql:query>
     <legend class="scheduler-border">Receiver's Details</legend>
     <div class="form-group">
     <label for="Address">Name</label>
-    <input type="text" class="form-control" name="RName">
+    <input type="text" class="form-control" id="RName" name="RName">
     </div> 
     <div class="form-group">
     <label for="Address">Address</label>
-    <input style="height:100px;" type="text" class="form-control" name="RAddress" value={{address}}&nbsp;{{city}}&nbsp;{{state}}&nbsp;{{zip}}>
+    <input style="height:100px;" type="text" class="form-control" id="RAddress" name="RAddress" value={{address}}&nbsp;{{city}}&nbsp;{{state}}&nbsp;{{zip}}>
     </div>
     <div class="row">
     <div class="col-md-6">
     <div class="form-group">
     <label for="Phone">Phone No.</label>
-    <input type="number" class="form-control" name="RPhone" value="87787">
+    <input type="number" class="form-control" id="RPhone" name="RPhone" value="">
     </div></div></div>
     
     </fieldset>
@@ -286,7 +304,7 @@ AND cart.customerId = "${sessionScope.user}";              </sql:query>
    	
     </fieldset>
     <center>
-   <button type="submit" class="btn1 btn-lg" style="width:30%;">Order</button>
+   <button type="submit" onClick="return validateDeliveryDetails();" class="btn1 btn-lg" style="width:30%;">Order</button>
     </center>
     </form>
     </div>
@@ -321,20 +339,17 @@ AND cart.customerId = "${sessionScope.user}";              </sql:query>
 				   
 				  
                    $("#cataloguediv").html(myObj);
-                   
-                
-                   
-                   
-                  
-
-                   
-				   
-				  
-				   
-				   
+   
 		       }
 		   })
 	   });
+	
+	 //search on Enter click
+       $('#searchBox').keypress(function(event){
+           if(event.keyCode == 13){
+            $('.search').click();
+           }
+       });
 	 
 	//suggestions generator
 	
@@ -359,10 +374,136 @@ AND cart.customerId = "${sessionScope.user}";              </sql:query>
 	   
 	   
 	   function filterDiv(){
+			  
 		   $("#myButton").attr('class', '');
 		   document.getElementById("article").style.display="none";
+		   document.getElementById("aside").style.display="block";
+		  
+		   document.getElementById("wantFilter").style.display="none";
+		   document.getElementById("applyButton").style.display="block";
 
 		   }
+	   
+
+	   
+	   //filter For samll screen
+	   
+	   $(document).on('click','#applyButton',function(){
+	 
+	 
+		   document.getElementById("aside").style.display="none";
+	 
+		  
+		   
+           var propertyFilter = [];
+           $.each($("input[name='prop1']:checked"), function(){            
+               propertyFilter.push($(this).val());
+           });
+          
+         
+           
+           $.each($("input[name='prop2']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop3']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+          
+           $.each($("input[name='prop4']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop5']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "ReturnResults",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(propertyFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#article").html(myObj);
+                   
+			   
+		       }
+		   })
+		   
+		   document.getElementById("article").style.display="";
+		   document.getElementById("applyButton").style.display="none";
+		   document.getElementById("wantFilter").style.display="";
+	   });
+
+//
+ function typeFilterDiv(){
+	
+	   $("#myButton").attr('class', '');
+	   document.getElementById("aside").style.display="block";
+	   document.getElementById("article").style.display="none";
+	  
+	   document.getElementById("typeFilter").style.display="none";
+	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+	   
+
+}
+
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
+         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
+
 
 	   //property filter
 	   $(document).on('click','#mysearch',function(){
@@ -415,17 +556,7 @@ AND cart.customerId = "${sessionScope.user}";              </sql:query>
 				   
 				  
                    $("#article").html(myObj);
-                   
-                
-                   
-                   
-                  
-
-                   
-				   
-				  
-				   
-				   
+   
 		       }
 		   })
 	   });
@@ -462,19 +593,82 @@ $(document).on('click','#searchbytype',function(){
 				  
                    $("#cataloguediv").html(myObj);
                    
-                
-                   
-                   
-                  
-
-                   
-				   
-				  
-				   
-				   
-		       }
+              }
 		   })
 	   });
+         
+         //validate delivery details
+function validateDeliveryDetails(){
+		
+		var UAddress=document.getElementById("UAddress").value;
+		var UCity = document.getElementById("UCity").value;
+		var UState = document.getElementById("UState").value;
+		var UZip = document.getElementById("UZip").value;
+		var UPhone = document.getElementById("UPhone").value;
+		var RName= document.getElementById("RName").value;
+	    var RAddress= document.getElementById("RAddress").value;
+	    var RPhone= document.getElementById("RPhone").value;
+		
+		if(!UAddress.replace(/^\s+/g, '').length){
+			 document.getElementById("UAddress").style.borderColor="#FF0000";
+				 document.getElementById("UAddress").focus();
+			 return false;
+		 }
+		 else{
+			 document.getElementById("UAddress").style.borderColor="#2874A6"
+			 
+		 }
+		 if(!UCity.replace(/^\s+/g, '').length){
+			 document.getElementById("UCity").style.borderColor="#FF0000";
+			 document.getElementById("UCity").focus();
+			 return false;
+		 } else{
+			 document.getElementById("UCity").style.borderColor="#2874A6";
+		 }
+		 if(!UState.replace(/^\s+/g, '').length){
+			 document.getElementById("UState").style.borderColor="#FF0000";
+			 document.getElementById("UState").focus();
+			 return false;
+		 } else{
+			 document.getElementById("UState").style.borderColor="#2874A6"
+		 }
+		 if(!UZip.replace(/^\s+/g, '').length){
+			 document.getElementById("UZip").style.borderColor="#FF0000";
+			 document.getElementById("UZip").focus();
+			 return false;
+		 } else{
+			 document.getElementById("UZip").style.borderColor="#2874A6";
+		 }
+		 if(!UPhone.replace(/^\s+/g, '').length){
+			 document.getElementById("UPhone").style.borderColor="#FF0000";
+			 document.getElementById("UPhone").focus();
+			 return false;
+		 } else{
+			 document.getElementById("UPhone").style.borderColor="#2874A6";
+		 }
+		 if(!RName.replace(/^\s+/g, '').length){
+			 document.getElementById("RName").style.borderColor="#FF0000";
+			 document.getElementById("RName").focus();
+			 return false;
+		 } else{
+			 document.getElementById("RName").style.borderColor="#2874A6";
+		 }
+		 if(!RAddress.replace(/^\s+/g, '').length){
+			 document.getElementById("RAddress").style.borderColor="#FF0000";
+			 document.getElementById("RAddress").focus();
+			 return false;
+		 } else{
+			 document.getElementById("RAddress").style.borderColor="#2874A6";
+		 }
+		 if(!RPhone.replace(/^\s+/g, '').length){
+			 document.getElementById("RPhone").style.borderColor="#FF0000";
+			 document.getElementById("RPhone").focus();
+			 return false;
+		 } else{
+			 document.getElementById("RPhone").style.borderColor="#2874A6";
+		 }
+		
+	}
 
  </script>
     
@@ -484,3 +678,7 @@ $(document).on('click','#searchbytype',function(){
     <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
+
+
+
+

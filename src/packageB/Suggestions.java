@@ -37,6 +37,7 @@ import java.sql.PreparedStatement;
 public class Suggestions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BusinessFunctions bf = new BusinessFunctions();
+	Configuration c=new Configuration();
 	
        
     /**
@@ -61,7 +62,7 @@ public class Suggestions extends HttpServlet {
 		try{
 		  
 			
-			String LUCENE_INDEX_DIRECTORY = "/lucene";
+			String LUCENE_INDEX_DIRECTORY = c.getLuceneIndexLocation();
 			
 			File file = new File(LUCENE_INDEX_DIRECTORY);
 			

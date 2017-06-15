@@ -3,16 +3,16 @@ package packageB;
 public class Configuration {
 	
 	
-	/*String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	String DB_URL="jdbc:mysql://localhost/MTDATABASE";
 	String USER = "root";
 	String PASS = "mayank";
 	static String imgLoc = "file:///D:/KanMay/";
 	static String outputImageLocation="D:/KanMay/";
-	static String luceneIndexLocation="/lucene";*/
+	static String luceneIndexLocation="/lucene";
 	
 	
-    String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+   /* String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static String DB_URL="jdbc:mysql://mysql31576-viapyarr.cloud.cms500.com/mtdatabase";
 	
 	//Database credentials
@@ -21,7 +21,7 @@ public class Configuration {
 	
 	static String imgLoc = "/viapyarrr/productImages/";
 	static String outputImageLocation="/opt/tomcat/webapps/viapyarrr/productImages/";
-	static String luceneIndexLocation="/opt/tomcat/webapps/viapyarrr/lucene";
+	static String luceneIndexLocation="/opt/tomcat/webapps/lucene";*/
 	
  
    

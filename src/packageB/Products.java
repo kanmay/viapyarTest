@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import packageB.Configuration;
 public class Products {
+	Configuration c = new Configuration();
 	
 	
     int productId;
@@ -375,7 +376,7 @@ public class Products {
 			void deleteProduct(int productId)
 			{
 				
-				Path path = Paths.get(URI.create("file:///D:/KanMay/product"+productId+".jpg"));;
+			/*	Path path = Paths.get(URI.create(c.getImgLoc()+productId+".jpg"));;
 				
 				try {
 				    Files.delete(path);
@@ -386,12 +387,12 @@ public class Products {
 				} catch (IOException x) {
 				    // File permission problems are caught here.
 				    System.err.println(x);
-				}
+				}*/
 				
 				
 				try{
 					conn = bf.connect();
-					String query = "DELETE FROM PRODUCTS WHERE productid='"+productId+"'";
+					String query = "DELETE FROM products WHERE productid='"+productId+"'";
 					smt = conn.createStatement();
 					smt.executeUpdate(query);
 					

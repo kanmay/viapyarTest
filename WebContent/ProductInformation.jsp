@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="packageB.Configuration"%> 
 <jsp:useBean id="ConfigurationBean" scope="request" class="packageB.Configuration"></jsp:useBean>    
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -26,7 +27,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-	
+	<link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
   
 	<link rel='stylesheet' media='screen and (min-width: 767px) and (max-width: 3000px)' href='css/styleproductinfo.css' />
 	<link rel='stylesheet' media='screen and (min-width: 0px) and (max-width: 767px)' href='css/styleproductinfomin.css' />
@@ -39,11 +40,23 @@
         .big {
             display: none;
         }
+         .logo{ 
+             position:fixed;
+             top:5px;
+             height:40px;
+             width:40%;
+          }  
     }
 	 @media (min-width: 767px) {
         .small {
             display: none;
         }
+        .logo{ 
+             position:fixed;
+             top:10px;
+             height:10%;
+             width:17%;
+           }
     }
     
     </style>
@@ -53,8 +66,62 @@
 <body>
 
 
-    <div class="div1">
+  <c:choose>
+  <c:when test="${sessionScope.user == null}">
+     <div class="div1">
       <nav class="navbar navbar-default nav1 navbar-fixed-top">
+        <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
+        <div class="navbar-header">       
+          <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span> 
+          </button>
+        </div>
+        
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right ul1">
+          <li><a href="Signup.jsp"><span class="glyphicon glyphicon-user"></span><sup><span class="glyphicon glyphicon-plus"></span> </sup>Sign up</a></li>
+     <li><a href="Login.jsp"><span class="glyphicon glyphicon-user"></span>Log in</a></li>
+     </ul>
+        </div>
+        <div class="row">
+          <div class=" col-xs-offset-2 col-xs-4 div3">
+            <div class="form-group">
+              <input type="text" class="form-control" id="searchBox" list="suggestions" placeholder="Search">
+            </div>
+          </div>
+          <div class="col-xs-1 div3">
+            <div class="row">
+              <div class="col-xs-6">
+                <div class="input-group-btn">
+                  <button class="btn btn-default inline form-control search"  type="button">
+                  <i class="glyphicon glyphicon-search "></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-1">
+           
+              <a href="Cart.jsp"><div class="input-group-btn">
+                <button type="button" class="btn btn-success btn-md form-control"><span class="glyphicon glyphicon-shopping-cart "></span><sup><span class="label label-danger">${sessionScope.itemsInCart}</span> </sup></button>
+              </div></a>
+           
+          </div>
+         </div>
+         </nav>
+    </div>
+    
+    
+   
+    
+  </c:when>
+ 
+  <c:otherwise>
+     <div class="div1">
+      <nav class="navbar navbar-default nav1 navbar-fixed-top">
+        <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
         <div class="navbar-header">       
           <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
           <span class="icon-bar"></span>
@@ -64,9 +131,9 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right ul1">
-            <li><a href="Signup.jsp"><span class="glyphicon glyphicon-user"></span><sup><span class="glyphicon glyphicon-plus"></span> </sup>Sign up</a></li>
-            <li><a href="Login.jsp"><span class="glyphicon glyphicon-user"></span>Log in</a></li>
-          </ul>
+           <li><a href="OrderDetails.jsp"><span class="glyphicon glyphicon-list-alt"></span> My Orders</a></li>
+     <li><a href="Logout"><span class="glyphicon glyphicon-user"></span>Logout</a></li>
+     </ul>
         </div>
         <div class="row">
           <div class=" col-xs-offset-2 col-xs-4 div3">
@@ -88,13 +155,17 @@
           <div class="col-xs-1">
             <a href="Cart.jsp">
               <div class="input-group-btn">
-                <button type="button" class="btn btn-success btn-md form-control"><span class="glyphicon glyphicon-shopping-cart "></span><sup><span class="label label-danger">3</span> </sup></button>
+                <button type="button" class="btn btn-success btn-md form-control"><span class="glyphicon glyphicon-shopping-cart "></span><sup><span class="label label-danger">${sessionScope.itemsInCart}</span> </sup></button>
               </div>
             </a>
           </div>
          </div>
          </nav>
     </div>
+   
+    
+  </c:otherwise>
+</c:choose>
     
 
 <datalist id="suggestions"></datalist>
@@ -114,8 +185,9 @@
   <div class="col-xs-12">
     <div class="thumbnail">
       <a href="#">
-        <img src="<c:out value="${ConfigurationBean.getImgLoc()}${productImageName}"></c:out>"  alt="Lights" style="width:100%;">
+        <img src="<c:out value="${ConfigurationBean.getImgLoc()}${productImageName}"></c:out>"  alt="Lights" style="width:70%;height:70%">
         <div class="caption">
+     <fmt:parseNumber var = "i" integerOnly = "true"  type = "number" value = "${price-discount/100*price}" />
           <p>
                         <br><br>
                         <c:out value="${productBrandName}"></c:out>
@@ -123,8 +195,8 @@
                       <p>
                         <c:out value="${productCategory}"></c:out>
                       </p>
-                      <p>
-                        <c:out value="${price}"></c:out>
+                      <p>&#8377;
+                        <c:out value="${i}"></c:out>
                       </p>
         </div>
       </a>
@@ -192,7 +264,7 @@
 </div>
 </div>
 
- <hr style="color:blue; width:240px;">
+
 
     </aside>
 
@@ -214,27 +286,54 @@
  
     <article>
      
-<br>
+
 <div class="row">
 <div class="col-xs-12">
-<h1> Description</h1>
+<br>
+<div align="center">
+<h3>${productBrandName } ${productName } ${productType }</h3>
 
-</div></div>
+      
+<h2><b>&#8377;<c:out value = "${i}" /></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<del><font color="green" size="5">&#8377;${price}</del>(${discount}% Off)</font></h2>
+
+</div>
+
+<br>
 <sql:query var="result" dataSource="${snapshot}">
- SELECT productId,prop1 FROM products where productCategory='${productCategory}' AND productBrandName='${productBrandName}' 
+ SELECT productId,prop1,productImageName,productBrandName,productName FROM products where productCategory='${productCategory}' AND productBrandName='${productBrandName}' 
 AND productType='${productType}' AND productName='${productName}';              
 </sql:query>
+
+<div style="margin-left:40px;">
+<h3><font color="grey">Availability: </font><font color="green">${availability}</font></h3>
  
-
+<h5>Variants</h5>
+<div class="row">  
 <c:forEach var="vrow" items="${result.rows}">
-      <div>
+      <div class="col-md-2  col-xs-4">
          <a href="ProductDetailsFetch?productId=<c:out value="${vrow.productId}"></c:out> ">
-          <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" width="50px" height="50px"></a>
+          <img src="<c:out value='${ConfigurationBean.getImgLoc()}${vrow.productImageName}' />" class="variant"></a>
           <p><c:out value="${vrow.prop1}"></c:out></p>
-      </div>          
+      </div>&nbsp;&nbsp;          
   </c:forEach>
+  </div>
+  <h3>Features:</h3>
+  <ul>
+   <li>Category: ${productCategory}</li>
+   <li>${prop1}</li>
+   <li>${prop2}</li>
+   <li>${prop3}</li>
+   <li>${prop4}</li>
+   <li>${prop5}</li>
+  </ul>
+  
+  <h3>Description</h3>
+   <ul>
+    <li>${description}</li>
+   </ul>
 
-
+</div>
+</div>
 
     </article>
 
@@ -324,6 +423,7 @@ $(document).ready(function(){
 			data:{
 				productId: $("#addToCart").attr("name"),
 				customerId: ${sessionScope.user},
+				
 		
 			},
 			
@@ -381,18 +481,16 @@ $(document).ready(function(){
 				  
                    $("#cataloguediv").html(myObj);
                    
-                
-                   
-                   
-                  
-                   
-				   
-				  
-				   
-				   
 		       }
 		   })
 	   });
+  
+  //search on Enter click
+            $('#searchBox').keypress(function(event){
+                if(event.keyCode == 13){
+                 $('.search').click();
+                }
+            });
 	 
 	//suggestions generator
 	
@@ -417,9 +515,136 @@ $(document).ready(function(){
 	   
 	   
 	   function filterDiv(){
+			  
 		   $("#myButton").attr('class', '');
 		   document.getElementById("article").style.display="none";
+		   document.getElementById("aside").style.display="block";
+		  
+		   document.getElementById("wantFilter").style.display="none";
+		   document.getElementById("applyButton").style.display="block";
+
 		   }
+	   
+
+	   
+	   //filter For samll screen
+	   
+	   $(document).on('click','#applyButton',function(){
+	 
+	 
+		   document.getElementById("aside").style.display="none";
+	 
+		  
+		   
+           var propertyFilter = [];
+           $.each($("input[name='prop1']:checked"), function(){            
+               propertyFilter.push($(this).val());
+           });
+          
+         
+           
+           $.each($("input[name='prop2']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop3']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+          
+           $.each($("input[name='prop4']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop5']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "ReturnResults",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(propertyFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#article").html(myObj);
+                   
+			   
+		       }
+		   })
+		   
+		   document.getElementById("article").style.display="";
+		   document.getElementById("applyButton").style.display="none";
+		   document.getElementById("wantFilter").style.display="";
+	   });
+
+//
+ function typeFilterDiv(){
+	
+	   $("#myButton").attr('class', '');
+	   document.getElementById("aside").style.display="block";
+	   document.getElementById("article").style.display="none";
+	  
+	   document.getElementById("typeFilter").style.display="none";
+	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+	   
+
+}
+
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
+         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
+
 	   //property filter
 	   $(document).on('click','#mysearch',function(){
 		   
@@ -552,3 +777,7 @@ $(document).on('click','#searchbytype',function(){
 
 </body>
 </html>
+
+
+
+

@@ -83,42 +83,48 @@ a:active {
    SELECT * FROM products WHERE productid=${productId}
   </sql:query> 
  <c:forEach var="row" items="${result.rows}">
-    <img src="file:///D:/KanMay/<c:out value="${row.productImageName}"></c:out>" width="180" height="150">
+    <center><img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" style="width:170px;height:200px"></center>
+    <br><br>
     
     <form action="UpdateProducts" method="POST" id="updateForm">
-     
-     Product id:<input type="text" name="productId" id="pid" value="<c:out value="${row.productId}"></c:out>" readonly>
-     Category:<input type="text" name="productCategory" value="<c:out value="${row.productCategory}"></c:out>">
-     BrandName: <input type="text" name="productBrandName" value="<c:out value="${row.productBrandName}"></c:out>"> 
-	 ProductType: <input type="text" name="productType" value="<c:out value="${row.productType}"></c:out>">
-	 ProductName:<input type="text" name="productName" value="<c:out value="${row.productName}"></c:out>">
-   <sql:query var="iresult" dataSource="${snapshot}">
-     SELECT * FROM productVariants WHERE productId=${productId}
-   </sql:query>
-   <c:forEach var="irow" items="${iresult.rows}">
-     Variant1:<input type="text" name="variant1" value="<c:out value="${irow.variant1}"></c:out>">
-     Variant2:<input type="text" name="variant2" value="<c:out value="${irow.variant2}"></c:out>">
-     Variant3:<input type="text" name="variant3" value="<c:out value="${irow.variant3}"></c:out>">
-     Variant4:<input type="text" name="variant4" value="<c:out value="${irow.variant4}"></c:out>">
-     Variant5:<input type="text" name="variant5" value="<c:out value="${irow.variant5}"></c:out>">
-   
-   </c:forEach>	 
-	 prop1<input type="text" name="prop1" value="<c:out value="${row.prop1}"></c:out>">
-	 prop2<input type="text" name="prop2" value="<c:out value="${row.prop2}"></c:out>">
-	 prop3<input type="text" name="prop3" value="<c:out value="${row.prop3}"></c:out>">
-	 prop4<input type="text" name="prop4" value="<c:out value="${row.prop4}"></c:out>">
-	 prop5<input type="text" name="prop5" value="<c:out value="${row.prop5}"></c:out>">
-	 description<input type="text" name="description" value="<c:out value="${row.description}"></c:out>">
-	 price<input type="number" name="price" value="<c:out value="${row.price}"></c:out>">
-	 discount<input type="number" name="discount" value="<c:out value="${row.discount}"></c:out>">
-	 cashback<input type="number" name="cashback" value="<c:out value="${row.cashback}"></c:out>">
-	 availability<input type="text" name="availability" value="<c:out value="${row.availability}"></c:out>">
+     <center> 
+     <table cellspacing="20">
+      <tr>
+        <td> Product id:<input type="text" name="productId" id="pid" value="<c:out value="${row.productId}"></c:out>" readonly></td>
+        <td>Category:<input type="text" name="productCategory" value="<c:out value="${row.productCategory}"></c:out>"></td>
+        <td>BrandName: <input type="text" name="productBrandName" value="<c:out value="${row.productBrandName}"></c:out>"></td> 
+	  </tr>
+	  
+	  <tr>
+	    <td>ProductType: <input type="text" name="productType" value="<c:out value="${row.productType}"></c:out>"></td>
+	    <td>ProductName:<input type="text" name="productName" value="<c:out value="${row.productName}"></c:out>"></td>
+        <td>prop1<input type="text" name="prop1" value="<c:out value="${row.prop1}"></c:out>"></td>
+	  </tr>
+	  
+	  <tr>
+	    <td>prop2<input type="text" name="prop2" value="<c:out value="${row.prop2}"></c:out>"></td>
+	    <td>prop3<input type="text" name="prop3" value="<c:out value="${row.prop3}"></c:out>"></td>
+	    <td>prop4<input type="text" name="prop4" value="<c:out value="${row.prop4}"></c:out>"></td>
+	  </tr>
+	  
+	  <tr>
+	    <td>prop5<input type="text" name="prop5" value="<c:out value="${row.prop5}"></c:out>"></td>
+	    <td>description<input type="text" name="description" value="<c:out value="${row.description}"></c:out>"></td>
+	    <td>price<input type="number" name="price" value="<c:out value="${row.price}"></c:out>"></td>
+	  </tr>  
+	 
+	   <tr>
+	    <td>discount<input type="number" name="discount" value="<c:out value="${row.discount}"></c:out>"></td>
+	    <td>cashback<input type="number" name="cashback" value="<c:out value="${row.cashback}"></c:out>"></td>
+	    <td>availability<input type="text" name="availability" value="<c:out value="${row.availability}"></c:out>"></td>
+	   </tr> 
+	 </table>
 	 
 	 <input type="button"  value="DeleteProduct" name="update" onclick="delFun();" />
 	 
 	 <input type="submit" value="Update" name="update"/>
 	 </form>
-    
+      </center> 
   </c:forEach>
   
   

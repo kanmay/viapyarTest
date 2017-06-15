@@ -18,6 +18,7 @@ overflow-x: hidden;
   display: flex;
 
 }
+
 main {
   flex: 1;
   display: flex;
@@ -44,7 +45,7 @@ overflow-y: scroll;
        }  
       .nav1
 {
-background-color:blue;
+background-color:#2874A6;
 
 
 }
@@ -55,7 +56,7 @@ padding-right:30px;
 .div1
 {
 
-background-color:blue;
+background-color:#2874A6;
 }
 div.inline { float:left; }
 body, html {
@@ -64,24 +65,24 @@ body, html {
 }
 .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
 color: #fff;
-background-color: blue;
+background-color: #2874A6;
 }
 .nav>li>a:focus, .nav>li>a:hover {
 text-decoration: none;
-background-color: blue;
+background-color: #2874A6;
 }
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-background-color: blue;
+background-color: #2874A6;
 border-color: #337ab7;
 }
 .li1
 {
-border: 2px solid blue;
+border: 2px solid #2874A6;
 border-radius:5px;
 }
 .div2
 {
-border: 2px solid blue;
+border: 2px solid #2874A6;
 border-radius:5px;
 padding:20px;
 margin:3px;
@@ -91,7 +92,7 @@ color: white;
 
 }
 a.a1 {
-color: blue;
+color: #2874A6;
 }
 .navbar-default .navbar-nav>li>a {
 color: white;
@@ -102,7 +103,7 @@ padding:0px;
 }
 .pager li>a:focus, .pager li>a:hover {
 text-decoration: none;
-background-color: blue;
+background-color: #2874A6;
 }
 .form-control1 {
     display: block;
@@ -112,7 +113,7 @@ background-color: blue;
     font-size: 14px;
     line-height: 1.42857143;
     color: white;
-    background-color: blue;
+    background-color: #2874A6;
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -124,19 +125,19 @@ background-color: blue;
 }
 /*.btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn-primary:hover {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 buttons.less:15
 .btn-primary.focus, .btn-primary:focus {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 
 .btn.focus, .btn:focus, .btn:hover {
@@ -146,8 +147,8 @@ buttons.less:15
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 
 .btn.focus, .btn:focus, .btn:hover {
@@ -157,58 +158,58 @@ buttons.less:15
 
 .btn-primary {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn-primary.focus, .btn-primary:focus {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn-primary.focus, .btn-primary:focus {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn.focus, .btn:focus, .btn:hover {
     color: white;
     text-decoration: none;
 }btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus, .btn-primary:active:focus, .btn-primary:active:hover, .open>.dropdown-toggle.btn-primary.focus, .open>.dropdown-toggle.btn-primary:focus, .open>.dropdown-toggle.btn-primary:hover {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 
 
 .btn-primary.active, .btn-primary.focus, .btn-primary:active, .btn-primary:focus, .btn-primary:hover, .open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn-primary:hover {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn-primary.focus, .btn-primary:focus {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .btn-primary {
     color: #fff;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }*/
 
 .panel
 {
-background-color:blue;
+background-color:#2874A6;
 color:white;
 }
 a.a3
@@ -226,30 +227,30 @@ text-decoration:none;
 }
 .panel-footer
 {
-color:blue;
+color:#2874A6;
 background-color:white;
 }
 .panel-default>.panel-heading {
     color: white;
-    background-color: blue;
-    border-color: blue;
+    background-color: #2874A6;
+    border-color: #2874A6;
 }
 .panel1 {
     background-color: white;
     color: white;
-        border: 1px solid blue;
+        border: 1px solid #2874A6;
 }
 .btn1
 {
-color:blue;
+color:#2874A6;
 background-color:white;
-border:1px solid blue;
+border:1px solid #2874A6;
 }
 .btn1:hover
 {
 color:white;
-background-color:blue;
-border:1px solid blue;
+background-color:#2874A6;
+border:1px solid #2874A6;
 }
 div.fixed {
     position: fixed;
@@ -291,7 +292,7 @@ padding:10px ;
 }
 
 .designtog:hover
-{background-color:blue;
+{background-color:#2874A6;
 color:white;
 }
 
@@ -303,7 +304,7 @@ color:white;
 }
 .activepage
 {
-background-color:blue;
+background-color:#2874A6;
 color:white;
 }
 div.polaroid {

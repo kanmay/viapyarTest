@@ -16,6 +16,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
       <title>My Cart</title>
+      <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
       <!-- Bootstrap -->
       <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="css/mystyle.css" rel="stylesheet">
@@ -35,11 +36,26 @@
          .big{
          display: none;
          }
+           .logo{ 
+             position:fixed;
+             top:5px;
+             height:40px;
+             width:40%;
+
+           }  
          }
          @media (min-width: 1001px) {
          .small {
          display: none;
          }
+           .logo{ 
+             position:fixed;
+             top:10px;
+             height:10%;
+             width:17%;
+
+
+           }
          }
       </style>
    </head>
@@ -52,6 +68,7 @@
          <c:when test="${sessionScope.user == null}">
             <div class="div1">
                <nav class="navbar navbar-default nav1 navbar-fixed-top">
+                 <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
                   <div class="navbar-header">       
                      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                      <span class="icon-bar"></span>
@@ -94,6 +111,7 @@
          <c:otherwise>
             <div class="div1">
                <nav class="navbar navbar-default nav1 navbar-fixed-top">
+                 <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
                   <div class="navbar-header">       
                      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                      <span class="icon-bar"></span>
@@ -163,15 +181,15 @@
                         <sql:query var="result" dataSource="${snapshot}">
                            SELECT products.productId,products.productImageName,products.productBrandName,
                            products.productName,products.productType,products.discount,products.price,
-                           products.cashback,orderdetails.quantity, (DATE(orderdetails.orderDate)) AS OD FROM orderdetails
+                           products.cashback,orderdetails.orderStatus,orderdetails.quantity, (DATE(orderdetails.orderDate)) AS OD FROM orderdetails
                            INNER JOIN products ON products.productId = orderdetails.productId 
-                           AND ordedetails.customerId = "${sessionScope.user}";
+                           AND orderdetails.customerId = "${sessionScope.user}";
                         </sql:query>
                         <c:forEach var="row" items="${result.rows}" varStatus="loop" >
                            <tr>
                               <td width="37%">
                                  <a href="gotocart.html">
-                                    <img src="file://D:/Kanmay/${row.productImageName}" style="width:100px; height:100px; float:left; padding:5px;">
+                                    <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" style="width:100px; height:100px; float:left; padding:5px;">
                                     <h5><span>${row.productBrandName} </span><span>${row.productName} </span><span>${row.productType} </span></h5>
                                     <p>${row.Discount}</p>
                                  </a>
@@ -182,7 +200,7 @@
                                 ${row.quantity}
                               </td>
                               <td width="15%">${row.price*row.quantity}</td>
-                              <td width="20%">Delivery: &nbsp;<span class="dt">${row.OD}</span><p>Delivered Successfully</p></td>
+                              <td width="20%">Delivery: &nbsp;<span class="dt">${row.OD}</span><p>${row.orderStatus}</p></td>
                               
                               
                            </tr>
@@ -205,7 +223,7 @@
          </div>
       </div>
       <div class="small">
-         <h3 class="h21">Cart <span class="glyphicon glyphicon-shopping-cart"></span></h3>
+         <h3 class="h21">Order Details <span class="glyphicon glyphicon-shopping-cart"></span></h3>
          <br>
          <hr>
          <c:forEach var="row" items="${result.rows}" varStatus="loop" >
@@ -213,7 +231,7 @@
                <table>
                   <tr>
                      <td width="25%" colspan="2">
-                        <img src="file://D:/Kanmay/${row.productImageName}" style="width:90px;height:100px;">
+                        <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" style="width:90px;height:100px;">
                      </td>
                      
                      <td style="text-align: center;" width="70%" >
@@ -249,6 +267,16 @@
          
         
          <hr>
+         <div class="fixed">
+         <div class="row">
+         <div class="col-xs-12">
+         <div class="btn-group btn-group-justified">
+         <a href="Home.jsp"  class="btn btn1 btn-primary"><span class="glyphicon glyphicon-menu-left"></span><span class="glyphicon glyphicon-menu-left"></span>Continue Shopping</a>
+        
+         </div>
+         </div>
+         </div>
+         </div>
         </div>
       </div>
       <%@ include file="footer.html" %>
@@ -409,19 +437,17 @@
          			   
          			  
                            $("#cataloguediv").html(myObj);
-                           
-                        
-                           
-                           
-                          
-         
-                           
-         			   
-         			  
-         			   
-         			   
+            
          	       }
          	   })
+            });
+         
+         
+          //search on Enter click
+            $('#searchBox').keypress(function(event){
+                if(event.keyCode == 13){
+                 $('.search').click();
+                }
             });
           
          //suggestions generator
@@ -447,10 +473,136 @@
             
             
             function filterDiv(){
-         	   $("#myButton").attr('class', '');
-         	   document.getElementById("article").style.display="none";
+      		  
+     		   $("#myButton").attr('class', '');
+     		   document.getElementById("article").style.display="none";
+     		   document.getElementById("aside").style.display="block";
+     		  
+     		   document.getElementById("wantFilter").style.display="none";
+     		   document.getElementById("applyButton").style.display="block";
+
+     		   }
+     	   
+
+     	   
+     	   //filter For samll screen
+     	   
+     	   $(document).on('click','#applyButton',function(){
+     	 
+     	 
+     		   document.getElementById("aside").style.display="none";
+     	 
+     		  
+     		   
+                var propertyFilter = [];
+                $.each($("input[name='prop1']:checked"), function(){            
+                    propertyFilter.push($(this).val());
+                });
+               
+              
+                
+                $.each($("input[name='prop2']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+                
+                
+                $.each($("input[name='prop3']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+                
+               
+                $.each($("input[name='prop4']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+                
+                
+                $.each($("input[name='prop5']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+     		   
+     		   
+     		   $.ajax({
+     			   type: "POST",
+     			   url: "ReturnResults",
+     			   dataType: "text",
+     			   data: {search: $("#searchBox").val(),
+     				     myFilter: JSON.stringify(propertyFilter),
+     				     myFilter1: "mayu"
+     			   
+     			   },
+     			 
+     			   success: function(response){
+     				   var myObj = $.parseHTML(response);
+     				   
+     				   
+     				  
+                        $("#article").html(myObj);
+                        
+     			   
+     		       }
+     		   })
+     		   
+     		   document.getElementById("article").style.display="";
+     		   document.getElementById("applyButton").style.display="none";
+     		   document.getElementById("wantFilter").style.display="";
+     	   });
+
+     //
+      function typeFilterDiv(){
+     	
+     	   $("#myButton").attr('class', '');
+     	   document.getElementById("aside").style.display="block";
+     	   document.getElementById("article").style.display="none";
+     	  
+     	   document.getElementById("typeFilter").style.display="none";
+     	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+     	   
+
+     }
+
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
          
-         	   }
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
+
          
             //property filter
             $(document).on('click','#mysearch',function(){
@@ -564,6 +716,8 @@
          	   })
             });
          
+         
+           
       </script>
       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

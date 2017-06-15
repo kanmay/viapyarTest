@@ -14,6 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
+    <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
      <script src="js/mycommonjs.js"></script>
     <script src="js/jquery-3.1.1.min.js"></script>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -27,12 +28,14 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   
-    
+    <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
    
     <link rel="stylesheet" type="text/css" href="css/stylehome.css">
     <link rel="stylesheet" type="text/css" href="stylefooter.css">
     <style>
-    
+      a:hover{
+      text-decoration:none;
+      }
       .carousel-inner > .item > img,
       .carousel-inner > .item > a > img {
       width: 100%;
@@ -42,14 +45,35 @@
       .big {
       display: none;
       }
+      .carousel-inner > .item > img,
+      .carousel-inner > .item > a > img {
+      width:100%;
+      height:150px;
+      }
+        .logo{ 
+       position:fixed;
+       top:5px;
+       height:40px;
+       width:40%;
+       
+      }
       }
       @media (min-width: 767px) {
       .small {
       display: none;
       }
+      .logo{ 
+       position:fixed;
+       top:10px;
+       height:10%;
+       width:17%;
+        
+       
       }
+      }
+      
     </style>
-    <title>Index</title>
+    <title>Viapyar|Welcomes you</title>
   </head>
   <body>
   
@@ -57,6 +81,7 @@
   <c:when test="${sessionScope.user == null}">
      <div class="div1">
       <nav class="navbar navbar-default nav1 navbar-fixed-top">
+      <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
         <div class="navbar-header">       
           <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
           <span class="icon-bar"></span>
@@ -64,6 +89,7 @@
           <span class="icon-bar"></span> 
           </button>
         </div>
+        
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right ul1">
           <li><a href="Signup.jsp"><span class="glyphicon glyphicon-user"></span><sup><span class="glyphicon glyphicon-plus"></span> </sup>Sign up</a></li>
@@ -106,6 +132,7 @@
   <c:otherwise>
      <div class="div1">
       <nav class="navbar navbar-default nav1 navbar-fixed-top">
+        <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
         <div class="navbar-header">       
           <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
           <span class="icon-bar"></span>
@@ -167,20 +194,24 @@
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
         <li data-target="#myCarousel" data-slide-to="3"></li>
+        <li data-target="#myCarousel" data-slide-to="4"></li>
       </ol>
       <!-- Wrapper for slides -->
-      <div class="carousel-inner" role="listbox">
+      <div class="carousel-inner" role="listbox" >
         <div class="item active">
-          <img src="images\2.JPG" alt="Chania" width="460" height="345">
+          <img src="/viapyarrr/Images/carouselA.jpg" alt="Chania" class="imgsize">
         </div>
         <div class="item">
-          <img src="images\4.JPG" alt="Chania" width="460" height="345">
+          <img src="/viapyarrr/Images/carouselB.jpg" alt="Chania" width="460" height="345">
         </div>
         <div class="item">
-          <img src="images\5.JPG" alt="Flower" width="460" height="345">
+          <img src="/viapyarrr/Images/carouselC.jpg" alt="Flower" width="460" height="345">
         </div>
         <div class="item">
-          <img src="images\6.JPG" alt="Flower" width="460" height="345">
+          <img src="/viapyarrr/Images/carouselD.jpg" alt="Flower" width="460" height="345">
+        </div>
+        <div class="item">
+          <img src="/viapyarrr/Images/carouselE.jpg" alt="Flower" width="460" height="345">
         </div>
       </div>
       <!-- Left and right controls -->
@@ -199,7 +230,7 @@
       user="${ConfigurationBean.getUSER()}"  password="${ConfigurationBean.getPASS()}"/>
     
     <div class="big">
-      <h2 class="deal"> FIRST DEALS <span class="glyphicon glyphicon-tags"></span> </h2>
+      <h2 class="deal"> FOOTWEAR <span class="glyphicon glyphicon-tags"></span> </h2>
       <div id="myCarousel1" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -214,9 +245,9 @@
             <div class="row">
               <div class="col-xs-1"></div>
               <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
+                SELECT * FROM products where productCategory='Men Footwear';
               </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+              <c:forEach var="row" items="${result.rows}" begin="0" end="4">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -233,8 +264,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -246,10 +278,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-               SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+            
+              <c:forEach var="row" items="${result.rows}" begin="5" end="9">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -266,8 +296,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -279,10 +310,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+             
+              <c:forEach var="row" items="${result.rows}" begin="10" end="14">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -299,8 +328,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -312,10 +342,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+           
+              <c:forEach var="row" items="${result.rows}" begin="15" end="19">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -332,8 +360,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -367,9 +396,9 @@
             <div class="row">
               <div class="col-xs-1"></div>
               <sql:query var="result" dataSource="${snapshot}">
-               SELECT * FROM products;
+               SELECT * FROM products where productCategory='Women Footwear';
               </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+              <c:forEach var="row" items="${result.rows}" begin="0" end="4">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -386,8 +415,40 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
+                      </p>                    </div>
+                    </a>
+                  </div>
+                </div>
+              </c:forEach>
+            </div>
+          </div>
+          <div class="item">
+            <div class="row">
+              <div class="col-xs-1"></div>
+        
+              <c:forEach var="row" items="${result.rows}" begin="5" end="9">
+                <div class="col-md-2 col-xs-6">
+                  <div class=" mg-image">
+                    <a href="ProductDetailsFetch?productId=
+                    <c:out value="${row.productId}"></c:out>
+                    ">
+                    <img src="
+                    <c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />
+                    " alt="Lights" width="150px" height="150px">
+                    <div class="caption">
+                      <p>
+                        <br><br>
+                        <c:out value="${row.productBrandName}"></c:out>
+                        <c:out value="${row.productName}"></c:out>
+                      <p>
+                        <c:out value="${row.productCategory}"></c:out>
+                      </p>
+                      <p><b>&#8377;
+                        <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -399,10 +460,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-               SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+            
+              <c:forEach var="row" items="${result.rows}" begin="10" end="14">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -419,8 +478,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -432,10 +492,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+             
+              <c:forEach var="row" items="${result.rows}" begin="15" end="19">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -452,41 +510,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
-                      </p>
-                    </div>
-                    </a>
-                  </div>
-                </div>
-              </c:forEach>
-            </div>
-          </div>
-          <div class="item">
-            <div class="row">
-              <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-               SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
-                <div class="col-md-2 col-xs-6">
-                  <div class=" mg-image">
-                    <a href="ProductDetailsFetch?productId=
-                    <c:out value="${row.productId}"></c:out>
-                    ">
-                    <img src="
-                    <c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />
-                    " alt="Lights" width="150px" height="150px">
-                    <div class="caption">
-                      <p>
-                        <br><br>
-                        <c:out value="${row.productBrandName}"></c:out>
-                        <c:out value="${row.productName}"></c:out>
-                      <p>
-                        <c:out value="${row.productCategory}"></c:out>
-                      </p>
-                      <p>
-                        <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -507,7 +533,7 @@
         </a>
       </div>
       <br>
-      <h2 class="deal"> SECOND DEALS <span class="glyphicon glyphicon-tags"></span> </h2>
+      <h2 class="deal">WOMEN'S BAG <span class="glyphicon glyphicon-tags"></span> </h2>
       <div id="myCarousel3" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -522,9 +548,9 @@
             <div class="row">
               <div class="col-xs-1"></div>
               <sql:query var="result" dataSource="${snapshot}">
-               SELECT * FROM products;
+               SELECT * FROM products where productCategory='Women Purse';
               </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+              <c:forEach var="row" items="${result.rows}" begin="0" end="4">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -541,8 +567,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -554,10 +581,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+           
+              <c:forEach var="row" items="${result.rows}" begin="5" end="9">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -574,8 +599,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -587,10 +613,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-               SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+       
+              <c:forEach var="row" items="${result.rows}" begin="10" end="14">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -607,8 +631,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -620,10 +645,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+             
+              <c:forEach var="row" items="${result.rows}" begin="15" end="19">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -640,8 +663,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -662,6 +686,7 @@
         </a>
       </div>
       <br>
+      <h2 class="deal"> T-SHIRTS<span class="glyphicon glyphicon-tags"></span> </h2>
       <div id="myCarousel4" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -676,9 +701,9 @@
             <div class="row">
               <div class="col-xs-1"></div>
               <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
+                SELECT * FROM products where productCategory='Men Clothing';
               </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+              <c:forEach var="row" items="${result.rows}" begin="0" end="4">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -695,8 +720,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -708,10 +734,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+           
+              <c:forEach var="row" items="${result.rows}" begin="5" end="9">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -728,8 +752,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -741,10 +766,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+             
+              <c:forEach var="row" items="${result.rows}" begin="10" end="14">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -761,8 +784,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -774,10 +798,8 @@
           <div class="item">
             <div class="row">
               <div class="col-xs-1"></div>
-              <sql:query var="result" dataSource="${snapshot}">
-                SELECT * FROM products;
-              </sql:query>
-              <c:forEach var="row" items="${result.rows}" begin="0" end="5">
+             
+              <c:forEach var="row" items="${result.rows}" begin="15" end="19">
                 <div class="col-md-2 col-xs-6">
                   <div class=" mg-image">
                     <a href="ProductDetailsFetch?productId=
@@ -794,8 +816,9 @@
                       <p>
                         <c:out value="${row.productCategory}"></c:out>
                       </p>
-                      <p>
+                      <p><b>&#8377;
                         <c:out value="${row.price}"></c:out>
+                        </b>
                       </p>
                     </div>
                     </a>
@@ -818,11 +841,11 @@
     </div>
     
     <div class="small">
-      <h3><font color="blue">First Deals<span class="glyphicon glyphicon-tags"></span></font></h3>
+      <h3><font color="#2874A6">Men's Footwear<span class="glyphicon glyphicon-tags"></span></font></h3>
       <div class="row">
         <div class="col-xs-1"></div>
         <sql:query var="result" dataSource="${snapshot}">
-          SELECT * FROM products;
+          SELECT * FROM products where productCategory='Men Footwear';
         </sql:query>
         <c:forEach var="row" items="${result.rows}" begin="0" end="1">
           <div class="col-xs-5">
@@ -841,9 +864,10 @@
                 <p>
                   <c:out value="${row.productCategory}"></c:out>
                 </p>
-                <p>
-                  <c:out value="${row.price}"></c:out>
-                </p>
+                <p><b>&#8377;
+                        <c:out value="${row.price}"></c:out>
+                        </b>
+                      </p>
               </div>
               </a>
             </div>
@@ -853,10 +877,8 @@
       </div>
       <div class="row">
         <div class="col-xs-1"></div>
-        <sql:query var="result" dataSource="${snapshot}">
-          SELECT * FROM products;
-        </sql:query>
-        <c:forEach var="row" items="${result.rows}" begin="0" end="1">
+        
+        <c:forEach var="row" items="${result.rows}" begin="2" end="3">
           <div class="col-xs-5">
             <div class=" mg-image">
               <a href="ProductDetailsFetch?productId=
@@ -873,9 +895,10 @@
                 <p>
                   <c:out value="${row.productCategory}"></c:out>
                 </p>
-                <p>
-                  <c:out value="${row.price}"></c:out>
-                </p>
+                <p><b>&#8377;
+                        <c:out value="${row.price}"></c:out>
+                        </b>
+                      </p>
               </div>
               </a>
             </div>
@@ -883,11 +906,11 @@
         </c:forEach>
         <div class="col-xs-1"></div>
       </div>
-      <h3><font color="blue">Second Deals<span class="glyphicon glyphicon-tags"></span></font></h3>
+      <h3><font color="#2874A6">Women's Footwear<span class="glyphicon glyphicon-tags"></span></font></h3>
       <div class="row">
         <div class="col-xs-1"></div>
         <sql:query var="result" dataSource="${snapshot}">
-          SELECT * FROM products;
+          SELECT * FROM products where productCategory='Women Footwear';
         </sql:query>
         <c:forEach var="row" items="${result.rows}" begin="0" end="1">
           <div class="col-xs-5">
@@ -906,10 +929,10 @@
                 <p>
                   <c:out value="${row.productCategory}"></c:out>
                 </p>
-                <p>
-                  <c:out value="${row.price}"></c:out>
-                </p>
-              </div>
+                <p><b>&#8377;
+                        <c:out value="${row.price}"></c:out>
+                        </b>
+                      </p>              </div>
               </a>
             </div>
           </div>
@@ -918,10 +941,8 @@
       </div>
       <div class="row">
         <div class="col-xs-1"></div>
-        <sql:query var="result" dataSource="${snapshot}">
-          SELECT * FROM products;
-        </sql:query>
-        <c:forEach var="row" items="${result.rows}" begin="0" end="1">
+      
+        <c:forEach var="row" items="${result.rows}" begin="2" end="3">
           <div class="col-xs-5">
             <div class=" mg-image">
               <a href="ProductDetailsFetch?productId=
@@ -938,9 +959,10 @@
                 <p>
                   <c:out value="${row.productCategory}"></c:out>
                 </p>
-                <p>
-                  <c:out value="${row.price}"></c:out>
-                </p>
+                <p><b>&#8377;
+                        <c:out value="${row.price}"></c:out>
+                        </b>
+                      </p>
               </div>
               </a>
             </div>
@@ -994,6 +1016,15 @@
 		   })
 	   });
 	 
+	
+	//search on click enter
+	
+	$('#searchBox').keypress(function(event){
+      if(event.keyCode == 13){
+       $('.search').click();
+      }
+    });
+	
 	//suggestions generator
 	
 	   $("#searchBox").keyup(function(){
@@ -1016,30 +1047,25 @@
 	   
 	   
 	   
-	   function filterDiv(){
+ function filterDiv(){
 		  
 		   $("#myButton").attr('class', '');
 		   document.getElementById("article").style.display="none";
-		   document.getElementById("FilterText").innerHTML="Apply Filters";
+		   document.getElementById("aside").style.display="block";
+		  
 		   document.getElementById("wantFilter").style.display="none";
 		   document.getElementById("applyButton").style.display="block";
 
 		   }
 	   
-	   function applyFilter(){
-		   document.getElementById("article").style.display="block";
-		   document.getElementById("aside").style.display="none";
-		   
-		   
 
-		   }
 	   
 	   //filter For samll screen
 	   
 	   $(document).on('click','#applyButton',function(){
 	 
 	 
-		   document.getElementById("myButton").style.display="none";
+		   document.getElementById("aside").style.display="none";
 	 
 		  
 		   
@@ -1092,6 +1118,61 @@
                    $("#article").html(myObj);
                    
 			   
+		       }
+		   })
+		   
+		   document.getElementById("article").style.display="";
+		   document.getElementById("applyButton").style.display="none";
+		   document.getElementById("wantFilter").style.display="";
+	   });
+
+//
+ function typeFilterDiv(){
+	
+	   $("#myButton").attr('class', '');
+	   document.getElementById("aside").style.display="block";
+	   document.getElementById("article").style.display="none";
+	  
+	   document.getElementById("typeFilter").style.display="none";
+	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+	   
+
+}
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
+         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
 		       }
 		   })
 	   });
@@ -1240,3 +1321,10 @@ $(document).on('click','#searchbytype',function(){
     
   </body>
 </html>
+
+
+
+
+
+
+

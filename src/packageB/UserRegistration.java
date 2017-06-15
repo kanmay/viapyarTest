@@ -35,6 +35,7 @@ public class UserRegistration extends HttpServlet {
 		String phone= "";
 		String promo= "";
 		String verificationStatus = "verified";
+		
 	    Customer cst = new Customer();
 		cst.insertIntoCustomer(fname, lname, password, address, city, zip, state, email, phone, promo);
 		
@@ -46,11 +47,12 @@ public class UserRegistration extends HttpServlet {
 			
 			  Customer cstmr = c.getCustomerDetails(email);
 			  HttpSession session = request.getSession(true);
-			  session.setAttribute("customerId", cstmr.getCustomerId());
+			  session.setAttribute("user", cstmr.getCustomerId());
 			  session.setAttribute("email", email);
 			  session.setAttribute("fname",cstmr.getFirstName());
 			  session.setAttribute("customerId", cstmr.getCustomerId());
 			  response.sendRedirect("Home.jsp");
+			  
 			
 		}
 		else

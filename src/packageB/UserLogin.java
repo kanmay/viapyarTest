@@ -68,7 +68,7 @@ public class UserLogin extends HttpServlet {
 		else{
 			String message = "UserId and Password did not match.";
 			request.setAttribute("message", message);
-			request.getRequestDispatcher("/Login.jsp").forward(request, response);
+			request.getRequestDispatcher("Login.jsp").forward(request, response);
 		}
 
 }

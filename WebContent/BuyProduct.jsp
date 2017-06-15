@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
    pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql" %>   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql" %>  
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="packageB.Configuration"%> 
 <jsp:useBean id="ConfigurationBean" scope="request" class="packageB.Configuration"></jsp:useBean>
 <sql:setDataSource var="snapshot" driver="${ConfigurationBean.getJDBC_DRIVER()}"
@@ -15,9 +16,10 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-      <title>My Cart</title>
+      <title>Buy Product</title>
       
       <!-- Bootstrap -->
+      <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
       <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="css/mystyle.css" rel="stylesheet">
       <script src="js/jquery-3.1.1.min.js"></script>
@@ -36,11 +38,26 @@
          .big{
          display: none;
          }
+          .logo{ 
+            position:fixed;
+            top:5px;
+            height:40px;
+            width:40%;
+
+           }  
          }
          @media (min-width: 1001px) {
          .small {
          display: none;
          }
+           .logo{ 
+             position:fixed;
+             top:10px;
+             height:10%;
+             width:17%;
+
+
+           }
          }
          
       </style>
@@ -55,6 +72,7 @@
   <c:when test="${sessionScope.user == null}">
      <div class="div1">
       <nav class="navbar navbar-default nav1 navbar-fixed-top">
+        <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
         <div class="navbar-header">       
           <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
           <span class="icon-bar"></span>
@@ -104,6 +122,7 @@
   <c:otherwise>
      <div class="div1">
       <nav class="navbar navbar-default nav1 navbar-fixed-top">
+        <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
         <div class="navbar-header">       
           <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
           <span class="icon-bar"></span>
@@ -166,6 +185,8 @@
                         SELECT * FROM products WHERE productId=${param.productId};
                      </sql:query>
                      <c:forEach var="row" items="${result.rows}" varStatus="loop" >
+                     <fmt:parseNumber var = "i" integerOnly = "true"  type = "number" value = "${row.price-row.discount/100*row.price}" />
+                      
                         <table class="table table-hover">
                            <thead>
                               <tr>
@@ -190,7 +211,7 @@
                                        <p>${row.Discount}</p>
                                     </a>
                                  </td>
-                                 <td width="12%"><span id="pprice">${row.price}</span>
+                                 <td width="12%">&#8377;<span id="pprice">${i}</span>
                                  </td>
                                  <td width="18%">
                                     <div style="width:50%;" class="input-group spinner">
@@ -202,13 +223,13 @@
                                     </div>
                                  </td>
                                  <td width="20%">Delivery: &nbsp;<span class="dat"></span></td>
-                                 <td width="15%"><span class="totalAmount">${row.price}</span>
+                                 <td width="15%"><span class="totalAmount">&#8377;${row.price}</span>
                                  </td>
                               </tr>
                            </tbody>
                         </table>
                         <div class="div4" align="right">
-                           <h2 >Estimated Total: Rs.<span class="totalAmount">${row.price}</span></h2>
+                           <h2 >Estimated Total: &#8377;<span class="totalAmount">${row.price}</span></h2>
                         </div>
                      </c:forEach>
 				
@@ -216,6 +237,7 @@
                <div class="row">
                <div class="col-xs-3"></div>
                <div class="col-xs-3"></div>
+               <div class="col-xs-3"></div>  
                <div class="col-xs-3">
                <button type="submit" class="btn1 btn-lg"><span class="glyphicon glyphicon-send"></span>Place Order</button>
                </div>
@@ -438,19 +460,16 @@
 				  
                    $("#cataloguediv").html(myObj);
                    
-                
-                   
-                   
-                  
-
-                   
-				   
-				  
-				   
-				   
 		       }
 		   })
 	   });
+         
+         //search on Enter click
+            $('#searchBox').keypress(function(event){
+                if(event.keyCode == 13){
+                 $('.search').click();
+                }
+            });
 	 
 	//suggestions generator
 	
@@ -475,10 +494,136 @@
 	   
 	   
 	   function filterDiv(){
+			  
 		   $("#myButton").attr('class', '');
 		   document.getElementById("article").style.display="none";
+		   document.getElementById("aside").style.display="block";
+		  
+		   document.getElementById("wantFilter").style.display="none";
+		   document.getElementById("applyButton").style.display="block";
 
 		   }
+	   
+
+	   
+	   //filter For samll screen
+	   
+	   $(document).on('click','#applyButton',function(){
+	 
+	 
+		   document.getElementById("aside").style.display="none";
+	 
+		  
+		   
+           var propertyFilter = [];
+           $.each($("input[name='prop1']:checked"), function(){            
+               propertyFilter.push($(this).val());
+           });
+          
+         
+           
+           $.each($("input[name='prop2']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop3']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+          
+           $.each($("input[name='prop4']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop5']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "ReturnResults",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(propertyFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#article").html(myObj);
+                   
+			   
+		       }
+		   })
+		   
+		   document.getElementById("article").style.display="";
+		   document.getElementById("applyButton").style.display="none";
+		   document.getElementById("wantFilter").style.display="";
+	   });
+
+//
+ function typeFilterDiv(){
+	
+	   $("#myButton").attr('class', '');
+	   document.getElementById("aside").style.display="block";
+	   document.getElementById("article").style.display="none";
+	  
+	   document.getElementById("typeFilter").style.display="none";
+	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+	   
+
+}
+
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
+         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
+
 
 	   //property filter
 	   $(document).on('click','#mysearch',function(){
@@ -605,3 +750,6 @@ $(document).on('click','#searchbytype',function(){
       <script src="bootstrap/js/bootstrap.min.js"></script>
    </body>
 </html>
+
+
+

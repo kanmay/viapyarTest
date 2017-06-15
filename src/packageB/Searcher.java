@@ -30,7 +30,7 @@ public class Searcher {
 	try{
 		    JSONArray jArray = new JSONArray();
 			
-			String LUCENE_INDEX_DIRECTORY = c.luceneIndexLocation;
+			String LUCENE_INDEX_DIRECTORY = c.getLuceneIndexLocation();
 			
 			File file = new File(LUCENE_INDEX_DIRECTORY);
 			
@@ -141,7 +141,7 @@ public class Searcher {
 			
 			    JSONArray jArray = new JSONArray();
 				
-				String LUCENE_INDEX_DIRECTORY = "/lucene";
+				String LUCENE_INDEX_DIRECTORY = c.getLuceneIndexLocation();
 				
 				File file = new File(LUCENE_INDEX_DIRECTORY);
 				

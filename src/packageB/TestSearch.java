@@ -24,6 +24,7 @@ public class TestSearch extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	BusinessFunctions bf = new BusinessFunctions();
 	Searcher s = new Searcher();
+	Configuration c=new Configuration();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -98,13 +99,6 @@ public class TestSearch extends HttpServlet {
 	    
 	  
 	    
-	    try {
-			System.out.println("hieeee       opooooo   "+jObjProductList.getJSONObject("productsList"));
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
 	    
        
 	    try{
@@ -113,11 +107,12 @@ public class TestSearch extends HttpServlet {
 		
 	    writer.println("<html>");
 	    writer.println("<head>");
-		writer.println("<link href='bootstrap/css/bootstrap.min.css' rel='stylesheet'/>"+
+		writer.println(
+	              
 			     
 				
 				 "<link rel='stylesheet' media='screen and (min-width: 768px) and (max-width: 2000px)' href='css/stylefilter.css' />"+
-			     "<link rel='stylesheet' media='screen and (min-width: 0px) and (max-width: 767px)' href='css/filtermin.css' />"
+			     "<link rel='stylesheet' media='screen and (min-width: 0px) and (max-width: 767px)' href='css/filtermine.css' />"
                  
 			     );
 	    writer.println("</head>");
@@ -419,6 +414,10 @@ found=0;
      
            
            writer.println("<input type='button' class='btn btn1 btn-lg hidet' id='mysearch'   value='Click Me'>");
+           
+           
+           
+   
 
 PArray.clear();
 found=0;
@@ -468,8 +467,11 @@ found=0;
  		                       "<hr>");
 
  		 
- 		                      writer.println("<input type='button' class='btn btn1 btn-lg ' id='searchbytype' onclick='applyFilter();'  value='Click Me'>");
- 	 }
+ 		                      writer.println("<input type='button' class='btn btn1 btn-lg hidet' id='searchbytype' onclick='applyTypeFilter();'  value='Click Me'>");
+ 		                      
+
+								
+								 	 }
 
 
     
@@ -482,16 +484,28 @@ writer.println( "<article id='article'>"+
   
   "<div class='row rowcol'>");
     for(int k=0;k<arraySize;k++){
-    writer.println("<div class='col-md-3 col-xs-6 no'>"+
-      "<div class='extra thumbnai'>"+
-        "<a href=''>"+
-          "<img src='file:///D:/Kanmay/'+myObj.productsList.products[k].productImageName' 'height='150px' width='150px'>"+
-          "<p> <b>"+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productName")+
-           "</b>"+
-          "</p>"+
+    	
+    	int p,f;
+    	float d;
+    	
+    	p=Integer.parseInt(((String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("price")));
+    	d=Float.parseFloat((String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("discount"));
+    	f=(int)(p-((d/100)*p));
+    	
+    	
+    writer.println("<div class='col-md-3 col-xs-6 thumbnai extra'>"+
+      "<div>"+
+        "<a class='searchres' href='ProductDetailsFetch?productId="+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productId")+"'>"+
+          "<img class='img-responsive' src='"+c.getImgLoc()+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productImageName")+"'  style='height:230px;'>"+
+          "<p style='  width : 100%;overflow:hidden; display:inline-block;text-overflow: ellipsis;white-space: nowrap;'><b>"+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productBrandName")+
+          "&nbsp;"+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("productName")+
+          "</b></p>"+
+         "<p style='  width : 100%;overflow:hidden; display:inline-block;text-overflow: ellipsis;white-space: nowrap;'> <b><span style='color:grey'><del>&#8377 "+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("price")+
+         "<del></span>&nbsp;&nbsp;&#8377 "+f+" <i>("+(String)((JSONObject) jObjProductList.getJSONObject("productsList").getJSONArray("products").get(k)).get("discount")+" % Off)</i></b>"+
+        "</p>"+
         "</a>"+
       "</div>"+
-    "</div>");
+    "</div>");    
     }
     
   writer.println("</div>"+
@@ -499,44 +513,78 @@ writer.println( "<article id='article'>"+
 "</main>"+
 "</div>");
   
- writer.println("<div  onclick='filterDiv();' id='wantFilter' class='small'>"+
-  
-  "<a href='#'>"+
-  "<div class='fixed'>"+
-  "<center>"+
-  "<h4 id='FilterText'>"+
-  "Want to apply Filters"+
-  "</h4>"+
-  "</center>"+
-  "</div>"+
-  "</a>"+
-  
+ if(flag==0){
+	 
+			writer.println("<div  onclick='filterDiv();' id='wantFilter' class='small'>"+
+			  		   
+			  "<a href='#'>"+
+			  "<div class='fixed'>"+
+			  "<center>"+
+			  "<h4 id='FilterText'>"+
+			  "Want to apply Filters"+
+			  "</h4>"+
+			  "</center>"+
+			  "</div>"+
+			  "</a>"+
+			"</div>");
+			 
+			 writer.println("<div style='display:none' onclick='applyFilter();' id='applyButton' class='small'>"+
+					  
+			  "<a href='#'>"+
+			  "<div class='fixed'>"+
+			  "<center>"+
+			  "<h4 id='FilterText'>"+
+			  "Apply Filters"+
+			  "</h4>"+
+			  "</center>"+
+			  "</div>"+
+			  "</a>"+
+			  
+			
+			  
+			  
+			  
+			  
+			"</div>");
 
-  
-  
-  
-  
-"</div>");
- 
- writer.println("<div style='display:none' onclick='applyFilter();' id='applyButton' class='small'>"+
+	 
+ }
+ else{
+	 
+      writer.println("<div  onclick='typeFilterDiv();' id='typeFilter' class='small'>"+
+     		   
+		  "<a href='#'>"+
+		  "<div class='fixed'>"+
+		  "<center>"+
+		  "<h4 id='FilterText'>"+
+		  "Want to apply Type Filters"+
+		  "</h4>"+
+		  "</center>"+
+		  "</div>"+
+		  "</a>"+
+		"</div>");
+		 
+		 writer.println("<div style='display:none' onclick='applyTypeFilter();' id='applyTypeFilterButton' class='small'>"+
+				  
+		  "<a href='#'>"+
+		  "<div class='fixed'>"+
+		  "<center>"+
+		  "<h4 id='FilterText'>"+
+		  "Apply Filters"+
+		  "</h4>"+
+		  "</center>"+
+		  "</div>"+
+		  "</a>"+
 		  
-  "<a href='#'>"+
-  "<div class='fixed'>"+
-  "<center>"+
-  "<h4 id='FilterText'>"+
-  "Apply Filters"+
-  "</h4>"+
-  "</center>"+
-  "</div>"+
-  "</a>"+
-  
-
-  
-  
-  
-  
-"</div>");
-
+		
+		  
+		  
+		  
+		  
+		"</div>");
+	 
+	 
+ }
  
 
           

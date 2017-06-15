@@ -121,6 +121,7 @@ a:active {
 
 <div class="div1">
    <nav class="navbar navbar-default nav1 navbar-fixed-top">
+     <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
    <div class="navbar-header">       
      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
       <span class="icon-bar"></span>

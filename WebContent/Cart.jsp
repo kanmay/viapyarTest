@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
    pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql" %>   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql" %>  
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@page import="packageB.Configuration"%> 
 <jsp:useBean id="ConfigurationBean" scope="request" class="packageB.Configuration"></jsp:useBean>
 <sql:setDataSource var="snapshot" driver="${ConfigurationBean.getJDBC_DRIVER()}"
@@ -17,6 +18,7 @@
       <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
       <title>My Cart</title>
       <!-- Bootstrap -->
+      <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
       <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="css/mystyle.css" rel="stylesheet">
       <script src="js/jquery-3.1.1.min.js"></script>
@@ -35,11 +37,26 @@
          .big{
          display: none;
          }
+         .logo{ 
+       position:fixed;
+       top:5px;
+       height:40px;
+       width:40%;
+       
+      }  
          }
          @media (min-width: 1001px) {
          .small {
          display: none;
          }
+           .logo{ 
+             position:fixed;
+             top:10px;
+             height:10%;
+             width:17%;
+
+
+           }
          }
       </style>
    </head>
@@ -51,6 +68,7 @@
          <c:when test="${sessionScope.user == null}">
             <div class="div1">
                <nav class="navbar navbar-default nav1 navbar-fixed-top">
+                 <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
                   <div class="navbar-header">       
                      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                      <span class="icon-bar"></span>
@@ -93,6 +111,7 @@
          <c:otherwise>
             <div class="div1">
                <nav class="navbar navbar-default nav1 navbar-fixed-top">
+                 <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
                   <div class="navbar-header">       
                      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                      <span class="icon-bar"></span>
@@ -147,7 +166,36 @@
                <div class="panel-heading">
                   <h3>CART <span class="glyphicon glyphicon-shopping-cart"></span></h3>
                </div>
-               <div class="panel-body">
+             
+               <sql:query var="result1" dataSource="${snapshot}">
+                           Select COUNT(*) as cartItems from cart where customerId="${sessionScope.user}";
+                </sql:query>
+                
+                <c:forEach var="rows" items="${result1.rows}" varStatus="loop" >
+                    <c:set var = "cartCount" scope = "page" value = "${rows.cartItems}"/>
+                </c:forEach>
+                
+                
+                 <c:choose>
+			         <c:when test="${pageScope.cartCount==0 }">
+			          <center>  <h1><i>Your Cart is Empty </i><p style="color:blue">&#9785;</p></h1></center>
+			          
+			         <div class="row">
+                       <div class="col-xs-3"></div>
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-3"></div>
+                        <div class="col-xs-3">
+                        <a href="Home.jsp">
+                         <button type="button" class="btn1 btn-lg"><span class="glyphicon glyphicon-menu-left"></span><span class="glyphicon glyphicon-menu-left"></span> Continue Shopping</button></a>
+                        </div>
+                      
+                  </div>
+			    
+			         </c:when>
+			 
+			         <c:otherwise>
+			         
+			         <div class="panel-body">
                   <table class="table table-hover">
                      <thead>
                         <tr>
@@ -161,22 +209,23 @@
                      <tbody>
                         <sql:query var="result" dataSource="${snapshot}">
                            SELECT products.productId,products.productImageName,products.productBrandName,
-                           products.productName,products.productType,products.discounr,products.price,
+                           products.productName,products.productType,products.discount,products.price,
                            products.cashback,cart.quantity FROM cart
                            INNER JOIN products ON products.productId = cart.productId 
                            AND cart.customerId = "${sessionScope.user}";
                         </sql:query>
                         <c:forEach var="row" items="${result.rows}" varStatus="loop" >
+                      <fmt:parseNumber var = "i" integerOnly = "true"  type = "number" value = "${row.price-row.discount/100*row.price}" />
                            <tr>
                               <td width="37%">
-                                 <a href="gotocart.html">
-                                    <img src="file://D:/Kanmay/${row.productImageName}" style="width:100px; height:100px; float:left; padding:5px;">
+                                 <a href="ProductDetailsFetch?productId=<c:out value='${row.productId}'/>">
+                                    <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" style="width:100px; height:100px; float:left; padding:5px;">
                                     <input type="text" value="${row.productId}" id="productId<c:out value="${loop.index}"/>" style="display:none"/>
                                     <h5><span>${row.productBrandName} </span><span>${row.productName} </span><span>${row.productType} </span></h5>
-                                    <p>${row.Discount}</p>
+                                    <p>${row.Discount}% Off</p>
                                  </a>
                               </td>
-                              <td width="12%">${row.price}${loop.index}
+                              <td width="12%">&#8377;${i}
                               </td>
                               <td width="12%">
                                  <div style="width:50%;" class="input-group spinner">
@@ -188,7 +237,7 @@
                                  </div>
                               </td>
                               <td width="20%">Delivery: &nbsp;<span class="dat"></span></td>
-                              <td width="15%">${row.price*row.quantity}
+                              <td width="15%">&#8377;${i*row.quantity}
                               </td>
                               <td width="4%">
                                  <span style="cursor:pointer;" class="glyphicon glyphicon-remove" onClick="DeleteFromCart(${loop.index})"></span>
@@ -199,12 +248,12 @@
                   </table>
                   <div class="div4" align="right">
                      <sql:query var="totalAmount" dataSource="${snapshot}">
-                       SELECT SUM(products.price * cart.quantity) AS amount 
+                       SELECT (SUM(FLOOR(products.price-(products.discount*products.price/100)) * cart.quantity)) AS amount 
                         FROM cart INNER JOIN products ON products.productId = cart.productId 
                         AND cart.customerId = ${sessionScope.user };
                      </sql:query>
                      <c:forEach var="trow" items="${totalAmount.rows}" >
-                        <h2>Estimated Total: Rs. ${trow.amount}</h2>
+                        <h2>Estimated Total: &#8377; ${trow.amount}</h2>
                      </c:forEach>
                      <sql:query var="totalitems" dataSource="${snapshot}">
                          SELECT 
@@ -231,6 +280,16 @@
                      </div>
                   </div>
                </div>
+			         
+			         </c:otherwise>
+			    </c:choose>
+
+
+                
+               
+               
+               
+
             </div>
          </div>
       </div>
@@ -238,18 +297,39 @@
          <h3 class="h21">Cart <span class="glyphicon glyphicon-shopping-cart"></span></h3>
          <br>
          <hr>
+         <c:choose>
+			         <c:when test="${pageScope.cartCount==0 }">
+			          <center>  <h1><i>Your Cart is Empty </i><p style="color:blue">&#9785;</p></h1></center>
+			          
+			          <div class="fixed">
+				        <div class="row">
+				        <div class="col-xs-12">
+				        <div class="btn-group btn-group-justified">
+				        <a href="Home.jsp"  class="btn btn1 btn-primary"><span class="glyphicon glyphicon-menu-left"></span><span class="glyphicon glyphicon-menu-left"></span>Continue Shopping</a>
+				        
+				        </div>
+				        </div>
+				        </div>
+				      </div>
+			    
+			         </c:when>
+			 
+	     <c:otherwise>
+         
          <c:forEach var="row" items="${result.rows}" varStatus="loop" >
+           
+           <fmt:parseNumber var = "i" integerOnly = "true"  type = "number" value = "${row.price-row.discount/100*row.price}" />
             <div class="thumbnail">
                <table>
                   <tr>
                      <td width="35%" colspan="2">
-                        <img src="file://D:/Kanmay/${row.productImageName}" style="width:100px;height:100px;">
+                        <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" style="width:100px;height:100px;">
                      </td>
                      <input type="text" value="${row.productId}" id="SproductId<c:out value="${loop.index}"/>" style="display:none"/>
                      <td width="60%" >
                         <span>${row.productBrandName}</span><span>${row.productName}</span><span>${row.productType}</span>
                         <p style="font-size:10px;">${row.Variant}</p>
-                        <p>${row.Discount}</p>
+                       <p>&#8377;${i} &nbsp;<del>&#8377;${row.price}</del>(${row.Discount}% Off)</p>
                      </td>
                      <td width="5%" style="vertical-align: top;"><span class="glyphicon glyphicon-remove" style="cursor:pointer" onClick="DeleteFromCart(${loop.index})" ></span></td>
                   </tr>
@@ -267,18 +347,19 @@
                      <td width=""></td>
                      <td width="60%">
                      <br>
-                     ${row.price*row.quantity}
+                     &#8377;${i*row.quantity}
                      </td>
                   </tr>
                   <tr>
                   <td colspan="2" width="30%"><br>
-                  <b>Delivery by: <span class="dat"></span></b>
+                  <b>Dlvry by: <span class="dat"></span></b>
                   </td>
                   <td width="5%"></td>
                   </tr>
                </table>
                </div>
          </c:forEach>
+         
          <br><br>
          <hr>
          <h3>Price Details</h3>
@@ -310,24 +391,29 @@
          </h4>
          </div>
          </div>
+        
          <hr>
          <div class="fixed">
          <div class="row">
          <div class="col-xs-12">
          <div class="btn-group btn-group-justified">
          <a href="Home.jsp"  class="btn btn1 btn-primary"><span class="glyphicon glyphicon-menu-left"></span><span class="glyphicon glyphicon-menu-left"></span>Continue Shopping</a>
+         
          <a href="DeliveryDetails.jsp?ordercount=${itemscount}" class=" btn btn1 btn-primary"><span class="glyphicon glyphicon-send"></span>Place Order</a>
          </div>
          </div>
          </div>
-         </div></div>
+         </div>
+           </c:otherwise>
+			    </c:choose>
+         </div>
       </div>
       <%@ include file="footer.html" %>
       <script>
          var d = new Date();
          var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
          console.log(d.getHours);
-          if(d.getHours()<24){
+          if(d.getHours()<16){
          	var elements = document.getElementsByClassName("dat");
          	 for(var i=0; i<elements.length; i++) { 
            	   elements[i].innerHTML = "Today";
@@ -487,19 +573,16 @@
          			   
          			  
                            $("#cataloguediv").html(myObj);
-                           
-                        
-                           
-                           
-                          
-         
-                           
-         			   
-         			  
-         			   
-         			   
+                       
          	       }
          	   })
+            });
+        
+        //search on Enter click
+            $('#searchBox').keypress(function(event){
+                if(event.keyCode == 13){
+                 $('.search').click();
+                }
             });
           
          //suggestions generator
@@ -525,11 +608,135 @@
             
             
             function filterDiv(){
-         	   $("#myButton").attr('class', '');
-         	   document.getElementById("article").style.display="none";
+      		  
+     		   $("#myButton").attr('class', '');
+     		   document.getElementById("article").style.display="none";
+     		   document.getElementById("aside").style.display="block";
+     		  
+     		   document.getElementById("wantFilter").style.display="none";
+     		   document.getElementById("applyButton").style.display="block";
+
+     		   }
+     	   
+
+     	   
+     	   //filter For samll screen
+     	   
+     	   $(document).on('click','#applyButton',function(){
+     	 
+     	 
+     		   document.getElementById("aside").style.display="none";
+     	 
+     		  
+     		   
+                var propertyFilter = [];
+                $.each($("input[name='prop1']:checked"), function(){            
+                    propertyFilter.push($(this).val());
+                });
+               
+              
+                
+                $.each($("input[name='prop2']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+                
+                
+                $.each($("input[name='prop3']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+                
+               
+                $.each($("input[name='prop4']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+                
+                
+                $.each($("input[name='prop5']:checked"), function(){            
+                	 propertyFilter.push($(this).val());
+                });
+                
+     		   
+     		   
+     		   $.ajax({
+     			   type: "POST",
+     			   url: "ReturnResults",
+     			   dataType: "text",
+     			   data: {search: $("#searchBox").val(),
+     				     myFilter: JSON.stringify(propertyFilter),
+     				     myFilter1: "mayu"
+     			   
+     			   },
+     			 
+     			   success: function(response){
+     				   var myObj = $.parseHTML(response);
+     				   
+     				   
+     				  
+                        $("#article").html(myObj);
+                        
+     			   
+     		       }
+     		   })
+     		   
+     		   document.getElementById("article").style.display="";
+     		   document.getElementById("applyButton").style.display="none";
+     		   document.getElementById("wantFilter").style.display="";
+     	   });
+
+     //
+      function typeFilterDiv(){
+     	
+     	   $("#myButton").attr('class', '');
+     	   document.getElementById("aside").style.display="block";
+     	   document.getElementById("article").style.display="none";
+     	  
+     	   document.getElementById("typeFilter").style.display="none";
+     	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+     	   
+
+     }
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
          
-         	   }
-         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
+
             //property filter
             $(document).on('click','#mysearch',function(){
          	   
@@ -649,3 +856,7 @@
       <script src="bootstrap/js/bootstrap.min.js"></script>
    </body>
 </html>
+
+
+
+

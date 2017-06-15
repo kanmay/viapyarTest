@@ -15,8 +15,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Insert title here</title>
+<title>Modify Products</title>
  <!-- Bootstrap -->
+    <link rel="icon" href="/viapyarrr/Images/makeinindia.jpg">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="bootstrap/css/bootstrap-social.min.css" rel="stylesheet">
 	<link href="bootstrap/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -37,11 +38,26 @@
         .big {
             display: none;
         }
+          .logo{ 
+       position:fixed;
+       top:5px;
+       height:40px;
+       width:40%;
+       
+      } 
     }
 	 @media (min-width: 767px) {
         .small {
             display: none;
         }
+       .logo{ 
+             position:fixed;
+             top:10px;
+             height:10%;
+             width:17%;
+
+
+           }
     }
    
    aside{
@@ -73,6 +89,7 @@ a:active {
 
 <div class="div1">
    <nav class="navbar navbar-default nav1 navbar-fixed-top">
+     <a href="Home.jsp"> <img class="logo img-responsive" src="/viapyarrr/Images/ViapyarLogo.png"/></a>
    <div class="navbar-header">       
      <button type="button" class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
       <span class="icon-bar"></span>
@@ -209,8 +226,8 @@ a:active {
 
 <div class="col-md-3 col-xs-6 no">
     <div class="extra thumbnai">
-      <a href="images\1.JPG">
-        <img src="images\1.JPG" alt="Lights">
+      <a href="AdminAddProducts.jsp">
+        <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" alt="Add Products" height="200px" width="170px">
 		 <div class="topright"><div style="height:20px; width:20px; background-color:white;"><span class="glyphicon glyphicon-pencil"></span></div></div>
 		<p> <b>lyf flame f7
 		<br>
@@ -228,7 +245,7 @@ a:active {
                 <div class="col-md-3 col-xs-6 no">
                     <div class="extra thumbnai">
                      <a href="EditProducts.jsp?productId=<c:out value="${row.productId}"></c:out>">
-                     <img src="images\1.JPG" alt="Lights">
+                     <img src="<c:out value="${ConfigurationBean.getImgLoc()}${row.productImageName}" />" alt="<c:out value="${row.productBrandName}"></c:out>" height="200px" width="170px" >
 		             <div class="topright"><div style="height:20px; width:20px; background-color:white;"><span class="glyphicon glyphicon-pencil"></span></div></div>
 		             <p> <b><c:out value="${row.productBrandName}"></c:out>
 		             <br>
@@ -290,12 +307,232 @@ a:active {
 
 
 <script>
-function filterDiv(){
- $("#myButton").attr('class', '');
- document.getElementById("article").style.display="none";
+  
+  
+  
+  
+//search at admin side
+  
+   function filterDiv(){
+		  
+		   $("#myButton").attr('class', '');
+		   document.getElementById("article").style.display="none";
+		  
+		   document.getElementById("wantFilter").style.display="none";
+		   document.getElementById("applyButton").style.display="block";
 
- }
- 
+		   }
+	   
+
+	   
+	   //filter For samll screen
+	   
+	   $(document).on('click','#applyButton',function(){
+	 
+	 
+		   document.getElementById("myButton").style.display="none";
+	 
+		  
+		   
+           var propertyFilter = [];
+           $.each($("input[name='prop1']:checked"), function(){            
+               propertyFilter.push($(this).val());
+           });
+          
+         
+           
+           $.each($("input[name='prop2']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop3']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+          
+           $.each($("input[name='prop4']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+           
+           
+           $.each($("input[name='prop5']:checked"), function(){            
+           	 propertyFilter.push($(this).val());
+           });
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "ReturnResults",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(propertyFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#article").html(myObj);
+                   
+			   
+		       }
+		   })
+		   
+		   document.getElementById("article").style.display="";
+	   });
+
+//
+ function typeFilterDiv(){
+	
+	   $("#myButton").attr('class', '');
+	   document.getElementById("aside").style.display="block";
+	   document.getElementById("article").style.display="none";
+	  
+	   document.getElementById("typeFilter").style.display="none";
+	   document.getElementById("applyTypeFilterButton").style.display="block";
+
+	   
+
+}
+
+
+
+//filter based on type for small screen   
+$(document).on('click','#applyTypeFilterButton',function(){
+		   
+		   alert("Submitting");
+           var typeFilter = [];
+           $.each($("input[name='productType']:checked"), function(){            
+               typeFilter.push($(this).val());
+           });
+          
+         
+           
+           
+		   
+		   
+		   $.ajax({
+			   type: "POST",
+			   url: "TestSearch",
+			   dataType: "text",
+			   data: {search: $("#searchBox").val(),
+				     myFilter: JSON.stringify(typeFilter),
+				     myFilter1: "mayu"
+			   
+			   },
+			 
+			   success: function(response){
+				   var myObj = $.parseHTML(response);
+				   
+				   
+				  
+                   $("#cataloguediv").html(myObj);
+                   		   
+		       }
+		   })
+	   });
+
+function filterDiv(){
+	  
+	   $("#myButton").attr('class', '');
+	   document.getElementById("article").style.display="none";
+	   document.getElementById("aside").style.display="block";
+	  
+	   document.getElementById("wantFilter").style.display="none";
+	   document.getElementById("applyButton").style.display="block";
+
+	   }
+
+
+
+//filter For samll screen
+
+$(document).on('click','#applyButton',function(){
+
+
+	   document.getElementById("aside").style.display="none";
+
+	  
+	   
+    var propertyFilter = [];
+    $.each($("input[name='prop1']:checked"), function(){            
+        propertyFilter.push($(this).val());
+    });
+   
+  
+    
+    $.each($("input[name='prop2']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+    
+    
+    $.each($("input[name='prop3']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+    
+   
+    $.each($("input[name='prop4']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+    
+    
+    $.each($("input[name='prop5']:checked"), function(){            
+    	 propertyFilter.push($(this).val());
+    });
+    
+	   
+	   
+	   $.ajax({
+		   type: "POST",
+		   url: "ReturnResults",
+		   dataType: "text",
+		   data: {search: $("#searchBox").val(),
+			     myFilter: JSON.stringify(propertyFilter),
+			     myFilter1: "mayu"
+		   
+		   },
+		 
+		   success: function(response){
+			   var myObj = $.parseHTML(response);
+			   
+			   
+			  
+            $("#article").html(myObj);
+            
+		   
+	       }
+	   })
+	   
+	   document.getElementById("article").style.display="";
+	   document.getElementById("applyButton").style.display="none";
+	   document.getElementById("wantFilter").style.display="";
+});
+
+//
+function typeFilterDiv(){
+
+$("#myButton").attr('class', '');
+document.getElementById("aside").style.display="block";
+document.getElementById("article").style.display="none";
+
+document.getElementById("typeFilter").style.display="none";
+document.getElementById("applyTypeFilterButton").style.display="block";
+
+
+
+}
+
  
 //suggestions generator
 
@@ -319,13 +556,7 @@ $("#searchBox").keyup(function(){
 
 $(document).on('click','.search',function(){
 	  
-   
-  
-    
-    
-	   
-	   
-	   $.ajax({
+   $.ajax({
 		   type: "GET",
 		   url: "AdminProductsSearch",
 		   dataType: "text",
@@ -339,22 +570,18 @@ $(document).on('click','.search',function(){
 			   console.log(myObj);
 			  
             $("#article").html(myObj);
-            
-         
-            
-            
-           
-
-            
-			   
-			  
-			   
+        	   
 			   
 	       }
 	   })
 });
 
-
+//search on Enter click
+            $('#searchBox').keypress(function(event){
+                if(event.keyCode == 13){
+                 $('.search').click();
+                }
+            });
 
 </script>
 
@@ -368,3 +595,5 @@ $(document).on('click','.search',function(){
  
 </body>
 </html>
+
+
